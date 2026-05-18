@@ -39,12 +39,10 @@ const About = () => {
       id="about"
       className="relative overflow-hidden bg-cream px-6 py-24"
     >
-      {/* Aksen dekoratif */}
       <div className="absolute -right-24 top-10 h-72 w-72 rounded-full bg-main/10 blur-3xl" />
       <div className="absolute -left-24 bottom-10 h-72 w-72 rounded-full bg-second/10 blur-3xl" />
 
       <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 md:grid-cols-2">
-        {/* Sisi Kiri: Gambar */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -67,7 +65,6 @@ const About = () => {
           </div>
         </motion.div>
 
-        {/* Sisi Kanan: Teks */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -110,7 +107,6 @@ const About = () => {
         </motion.div>
       </div>
 
-      {/* Grid fakta */}
       <motion.div
         variants={containerVariant}
         initial="hidden"

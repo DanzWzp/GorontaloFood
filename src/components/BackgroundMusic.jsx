@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import gambusi from "../assets/gambusigorontalo.mp3";
 
-// Mulai dari detik ke-5 dan loop terus dari titik itu (lewati intro)
 const START_AT = 5;
 
 export default function BackgroundMusic() {
@@ -13,15 +12,11 @@ export default function BackgroundMusic() {
     if (!audio) return;
 
     const seekToStart = () => {
-      try {
-        if (audio.currentTime < START_AT) audio.currentTime = START_AT;
-      } catch {
-        /* belum seekable, diabaikan */
+      if (audio.readyState >= 1 && audio.currentTime < START_AT) {
+        audio.currentTime = START_AT;
       }
     };
 
-    // Autoplay TERSENYAP diizinkan browser → musik langsung jalan saat web dibuka,
-    // tinggal di-unmute begitu pengguna menyentuh halaman.
     const startMuted = () => {
       audio.muted = true;
       seekToStart();
@@ -35,10 +30,13 @@ export default function BackgroundMusic() {
       audio.play().catch(() => {});
     };
 
-    // Hanya event ini yang dianggap "user gesture" oleh browser & membuka audio.
-    // mousemove/scroll TIDAK termasuk — jadi musik baru bersuara setelah
-    // klik / tap / tekan tombol pertama.
-    const events = ["pointerdown", "mousedown", "touchstart", "keydown", "click"];
+    const events = [
+      "pointerdown",
+      "mousedown",
+      "touchstart",
+      "keydown",
+      "click",
+    ];
     const onFirstGesture = () => {
       unmute();
       events.forEach((e) => window.removeEventListener(e, onFirstGesture));
@@ -56,7 +54,6 @@ export default function BackgroundMusic() {
       startMuted();
     };
 
-    // Loop manual agar setiap putaran mulai lagi dari detik ke-5
     const onEnded = () => {
       audio.currentTime = START_AT;
       audio.play().catch(() => {});

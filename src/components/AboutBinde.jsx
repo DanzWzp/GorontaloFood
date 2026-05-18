@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import binteImg from "../assets/bintebiluhuta.jpg";
+import bindeImg from "../assets/bintebiluhuta.jpg";
 
 const facts = [
   {
@@ -33,18 +33,16 @@ const itemVariant = {
   show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
-const AboutBinte = () => {
+const AboutBinde = () => {
   return (
     <section
-      id="about-binte"
+      id="about-binde"
       className="relative overflow-hidden bg-cream px-6 py-24"
     >
-      {/* Aksen dekoratif */}
       <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-second/15 blur-3xl" />
       <div className="absolute -right-24 bottom-10 h-72 w-72 rounded-full bg-main/10 blur-3xl" />
 
       <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 md:grid-cols-2">
-        {/* Sisi Kiri: Gambar */}
         <motion.div
           initial={{ opacity: 0, x: -60 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -55,8 +53,8 @@ const AboutBinte = () => {
           <div className="absolute -left-4 -top-4 z-0 hidden h-full w-full rounded-3xl border-4 border-second md:block" />
           <div className="group relative z-10 overflow-hidden rounded-3xl shadow-2xl">
             <img
-              src={binteImg}
-              alt="Semangkuk Binte Biluhuta khas Gorontalo"
+              src={bindeImg}
+              alt="Semangkuk Binde Biluhuta khas Gorontalo"
               loading="lazy"
               decoding="async"
               className="h-[420px] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
@@ -74,7 +72,6 @@ const AboutBinte = () => {
           </motion.div>
         </motion.div>
 
-        {/* Sisi Kanan: Penjelasan */}
         <motion.div
           initial={{ opacity: 0, x: 60 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -85,13 +82,13 @@ const AboutBinte = () => {
             Tentang Kuliner
           </span>
           <h2 className="mb-6 mt-2 text-4xl font-bold text-charcoal md:text-5xl">
-            Apa itu <span className="text-second">Binte Biluhuta?</span>
+            Apa itu <span className="text-second">Binde Biluhuta?</span>
           </h2>
 
           <p className="mb-4 text-lg leading-relaxed text-gray-700">
-            Binte Biluhuta adalah <strong>sup jagung khas Gorontalo</strong>{" "}
+            Binde Biluhuta adalah <strong>sup jagung khas Gorontalo</strong>{" "}
             yang menyegarkan. Dalam bahasa setempat,{" "}
-            <span className="font-semibold text-second">"binte"</span> berarti
+            <span className="font-semibold text-second">"binde"</span> berarti
             jagung dan{" "}
             <span className="font-semibold text-second">"biluhuta"</span>{" "}
             berarti disiram — menggambarkan kuah hangat yang disiramkan ke atas
@@ -108,14 +105,13 @@ const AboutBinte = () => {
           </p>
 
           <p className="text-lg leading-relaxed text-gray-700">
-            Kerap disebut <strong>"Milu Siram"</strong>, Binte Biluhuta jadi
+            Kerap disebut <strong>"Milu Siram"</strong>, Binde Biluhuta jadi
             sajian pemersatu yang hadir saat keluarga berkumpul — paling nikmat
             disantap selagi hangat di sore hari.
           </p>
         </motion.div>
       </div>
 
-      {/* Grid fakta */}
       <motion.div
         variants={containerVariant}
         initial="hidden"
@@ -141,4 +137,4 @@ const AboutBinte = () => {
   );
 };
 
-export default AboutBinte;
+export default AboutBinde;

@@ -12,13 +12,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Chunk ini baru dimuat setelah hero tampil; sekalian prefetch semua model
-// agar perpindahan antar section 3D mulus tanpa jeda.
 ["/ilabulo.glb", "/bintebiluhuta.glb", "/tiliaya.glb"].forEach((u) =>
   useGLTF.preload(u)
 );
 
-/* ---- Loader overlay saat model dimuat ---- */
 function Loader() {
   const { progress } = useProgress();
   return (
@@ -33,7 +30,6 @@ function Loader() {
   );
 }
 
-/* ---- Model + animasi GSAP (di-scope per section lewat triggerId) ---- */
 function FoodModel({ url, scale, triggerId }) {
   const { scene } = useGLTF(url);
   const group = useRef();
@@ -43,7 +39,6 @@ function FoodModel({ url, scale, triggerId }) {
     if (!g) return;
     const trigger = `#${triggerId}`;
 
-    // Animasi masuk: muncul dari bawah sambil membesar & berputar
     const ctx = gsap.context(() => {
       gsap.from(g.scale, {
         x: 0,
@@ -60,7 +55,6 @@ function FoodModel({ url, scale, triggerId }) {
         scrollTrigger: { trigger, start: "top 75%" },
       });
 
-      // Putar 360° seiring scroll (scrub)
       gsap.to(g.rotation, {
         y: Math.PI * 2,
         ease: "none",
@@ -76,7 +70,6 @@ function FoodModel({ url, scale, triggerId }) {
     return () => ctx.revert();
   }, [triggerId]);
 
-  // Idle: mengambang lembut + kemiringan halus
   useFrame((state) => {
     const g = group.current;
     if (!g) return;
@@ -95,10 +88,6 @@ function FoodModel({ url, scale, triggerId }) {
   );
 }
 
-/**
- * Section 3D yang dapat dipakai ulang untuk tiap hidangan.
- * accent: "main" (emas) | "second" (hijau) — mewarnai badge & cahaya latar.
- */
 export default function Food3D({
   id,
   modelUrl,
@@ -122,12 +111,9 @@ export default function Food3D({
       ? "bg-[conic-gradient(from_0deg,transparent,rgba(89,172,119,0.20),transparent_60%)]"
       : "bg-[conic-gradient(from_0deg,transparent,rgba(209,145,60,0.18),transparent_60%)]";
 
-  // active: pernah mendekati viewport → mount Canvas (hindari 3 konteks WebGL sekaligus)
-  // inView: sedang terlihat → jalankan render loop, kalau tidak hemat GPU
   const [active, setActive] = useState(false);
   const [inView, setInView] = useState(false);
 
-  // Perkecil model di layar mobile agar tidak terlalu memenuhi layar
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 767px)");
@@ -172,7 +158,6 @@ export default function Food3D({
       ref={sectionRef}
       className="relative min-h-screen w-full overflow-hidden bg-charcoal"
     >
-      {/* ---- Background: gradien + orb glow + grain ---- */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,#3a2a12_0%,#1a1410_55%,#0d0a07_100%)]" />
         <div className="absolute -top-32 -left-24 h-[28rem] w-[28rem] rounded-full bg-main/25 blur-[120px] animate-float-slow" />
@@ -186,7 +171,6 @@ export default function Food3D({
         <div className="absolute inset-0 bg-grain opacity-[0.18] mix-blend-overlay" />
       </div>
 
-      {/* ---- Konten teks ---- */}
       <div
         ref={textRef}
         className="relative z-10 mx-auto max-w-3xl px-6 pt-24 text-center text-cream md:pt-28"
@@ -206,7 +190,6 @@ export default function Food3D({
         </p>
       </div>
 
-      {/* ---- Canvas 3D (di-mount hanya saat dekat viewport) ---- */}
       <div className="relative z-10 h-[68vh] w-full md:h-[72vh]">
         {!active && (
           <div className="flex h-full w-full flex-col items-center justify-center gap-3 text-cream/70">
@@ -217,42 +200,49 @@ export default function Food3D({
           </div>
         )}
         {active && (
-        <Canvas
-          shadows
-          dpr={[1, 1.75]}
-          frameloop={inView ? "always" : "demand"}
-          camera={{ position: [0, 1.2, 6], fov: 42 }}
-          gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-        >
-          <ambientLight intensity={0.6} />
-          <directionalLight
-            position={[5, 8, 5]}
-            intensity={2.4}
-            castShadow
-            shadow-mapSize={[1024, 1024]}
-          />
-          <directionalLight
-            position={[-6, 3, -4]}
-            intensity={0.8}
-            color="#59ac77"
-          />
-          <pointLight position={[0, -2, 4]} intensity={1.2} color="#d1913c" />
-
-          <Suspense fallback={<Loader />}>
-            <FoodModel url={modelUrl} scale={effectiveScale} triggerId={id} />
-            <ContactShadows
-              position={[0, -1.8, 0]}
-              opacity={0.5}
-              scale={12}
-              blur={2.6}
-              far={4}
-              color="#000000"
+          <Canvas
+            shadows
+            dpr={[1, 1.75]}
+            frameloop={inView ? "always" : "demand"}
+            camera={{ position: [0, 1.2, 6], fov: 42 }}
+            gl={{
+              antialias: true,
+              alpha: true,
+              powerPreference: "high-performance",
+            }}
+          >
+            <ambientLight intensity={0.6} />
+            <directionalLight
+              position={[5, 8, 5]}
+              intensity={2.4}
+              castShadow
+              shadow-mapSize={[1024, 1024]}
             />
-          </Suspense>
-        </Canvas>
+            <directionalLight
+              position={[-6, 3, -4]}
+              intensity={0.8}
+              color="#59ac77"
+            />
+            <pointLight
+              position={[0, -2, 4]}
+              intensity={1.2}
+              color="#d1913c"
+            />
+
+            <Suspense fallback={<Loader />}>
+              <FoodModel url={modelUrl} scale={effectiveScale} triggerId={id} />
+              <ContactShadows
+                position={[0, -1.8, 0]}
+                opacity={0.5}
+                scale={12}
+                blur={2.6}
+                far={4}
+                color="#000000"
+              />
+            </Suspense>
+          </Canvas>
         )}
 
-        {/* Hint interaksi */}
         <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 text-xs uppercase tracking-[0.25em] text-cream/40">
           ⬍ Gulir untuk memutar
         </div>

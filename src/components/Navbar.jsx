@@ -17,7 +17,7 @@ export default function Navbar() {
     { label: "Home", href: "#home" },
     { label: "Galeri 3D", href: "#model" },
     { label: "Ilabulo", href: "#about" },
-    { label: "Binte Biluhuta", href: "#about-binte" },
+    { label: "Binde Biluhuta", href: "#about-binde" },
     { label: "Tili Aya", href: "#about-tiliaya" },
   ];
 
@@ -32,7 +32,6 @@ export default function Navbar() {
         }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-        {/* Logo */}
         <a
           href="#home"
           className="text-2xl font-bold tracking-wide text-cream"
@@ -40,7 +39,6 @@ export default function Navbar() {
           GorontaloFood<span className="text-main">.</span>
         </a>
 
-        {/* Menu Desktop */}
         <ul className="hidden md:flex space-x-8 font-medium">
           {links.map((item) => (
             <li key={item.label}>
@@ -54,7 +52,6 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Menu Mobile */}
         <button
           className="md:hidden flex flex-col space-y-1"
           onClick={() => setOpen(!open)}
@@ -65,7 +62,6 @@ export default function Navbar() {
           <span className="w-6 h-0.5 bg-cream"></span>
         </button>
 
-        {/* Dropdown Mobile */}
         {open && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}

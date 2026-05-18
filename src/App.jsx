@@ -1,16 +1,14 @@
 import { lazy, Suspense } from "react";
 import Navbar from "./components/Navbar";
 import About from "./components/About";
-import AboutBinte from "./components/AboutBinte";
+import AboutBinde from "./components/AboutBinde";
 import AboutTiliaya from "./components/AboutTiliaya";
 import BackgroundMusic from "./components/BackgroundMusic";
 import { motion, useScroll, useSpring } from "framer-motion";
 import makananGorontaloVideo from "./assets/makanangorontalo.mp4";
 
-// three.js berat → dipisah ke chunk sendiri, dimuat setelah hero tampil
 const Food3D = lazy(() => import("./components/Food3D"));
 
-// Placeholder section selagi chunk 3D dimuat (menjaga layout & estetika)
 function Section3DFallback() {
   return (
     <section className="flex min-h-screen w-full flex-col items-center justify-center gap-4 bg-charcoal text-cream/70">
@@ -32,10 +30,8 @@ export default function App() {
 
   return (
     <>
-      {/* Musik latar — gambus Gorontalo, loop dari detik ke-5 */}
       <BackgroundMusic />
 
-      {/* Progress scroll halaman */}
       <motion.div
         style={{ scaleX }}
         className="fixed left-0 top-0 z-[60] h-1 w-full origin-left bg-gradient-to-r from-main via-second to-main"
@@ -43,7 +39,6 @@ export default function App() {
 
       <Navbar />
 
-      {/* --- Hero Section --- */}
       <section
         id="home"
         className="relative min-h-screen w-full overflow-hidden"
@@ -58,11 +53,9 @@ export default function App() {
           className="video-pan-mobile absolute left-0 top-0 h-full w-full object-cover object-[center_10%]"
         />
 
-        {/* Overlay & gradien */}
         <div className="absolute inset-0 bg-black/15" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-charcoal" />
 
-        {/* Konten teks */}
         <div className="relative z-10 flex h-screen flex-col items-center justify-center px-4 text-center text-white">
           <motion.span
             initial={{ opacity: 0, y: 20 }}
@@ -91,7 +84,7 @@ export default function App() {
           >
             Tiga sajian legendaris —{" "}
             <span className="font-bold text-main">Ilabulo</span>,{" "}
-            <span className="font-bold text-second">Binte Biluhuta</span>, dan{" "}
+            <span className="font-bold text-second">Binde Biluhuta</span>, dan{" "}
             <span className="font-bold text-main">Tili Aya</span> — yang
             memadukan rasa pedas, gurih, dan manis warisan tanah Gorontalo.
           </motion.p>
@@ -121,7 +114,6 @@ export default function App() {
           </motion.div>
         </div>
 
-        {/* Scroll indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, y: [0, 10, 0] }}
@@ -133,7 +125,6 @@ export default function App() {
       </section>
 
       <Suspense fallback={<Section3DFallback />}>
-        {/* --- 3D Ilabulo (setelah Hero) --- */}
         <Food3D
           id="model"
           modelUrl="/ilabulo.glb"
@@ -146,20 +137,18 @@ export default function App() {
           accent="main"
         />
 
-        {/* --- 3D Binte Biluhuta --- */}
         <Food3D
-          id="binte-3d"
+          id="binde-3d"
           modelUrl="/bintebiluhuta.glb"
           modelScale={2.4}
           badge="Sup Jagung Khas Gorontalo"
           titleLead="Lihat"
-          titleName="Binte Biluhuta"
+          titleName="Binde Biluhuta"
           titleTail="3D"
           description="Semangkuk kesegaran jagung manis dan kuah gurih — gulir untuk memutar dan amati teksturnya dari segala sisi."
           accent="second"
         />
 
-        {/* --- 3D Tili Aya --- */}
         <Food3D
           id="tiliaya-3d"
           modelUrl="/tiliaya.glb"
@@ -173,22 +162,18 @@ export default function App() {
         />
       </Suspense>
 
-      {/* --- About Ilabulo --- */}
       <About />
 
-      {/* --- About Binte Biluhuta --- */}
-      <AboutBinte />
+      <AboutBinde />
 
-      {/* --- About Tili Aya --- */}
       <AboutTiliaya />
 
-      {/* --- Footer --- */}
       <footer className="bg-charcoal px-6 py-12 text-center text-cream/60">
         <h3 className="text-2xl font-bold text-cream">
           GorontaloFood<span className="text-main">.</span>
         </h3>
         <p className="mx-auto mt-3 max-w-md text-sm">
-          Melestarikan kuliner warisan Gorontalo — Ilabulo, Binte Biluhuta, dan
+          Melestarikan kuliner warisan Gorontalo — Ilabulo, Binde Biluhuta, dan
           Tili Aya, simbol persatuan dalam setiap suapan.
         </p>
         <p className="mt-6 text-xs text-cream/40">

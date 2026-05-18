@@ -1,10 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand palette */
-  --color-main: #d1913c; /* Golden turmeric — warna khas Ilabulo */
+  --color-main: #d1913c;
   --color-main-dark: #a8701f;
-  --color-second: #59ac77; /* Hijau daun pisang */
+  --color-second: #59ac77;
   --color-cream: #fffdf5;
   --color-charcoal: #1a1410;
 
@@ -22,7 +21,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Custom scrollbar selaras tema */
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -34,7 +32,6 @@ body {
   border-radius: 999px;
 }
 
-/* Grain / noise overlay halus untuk kesan premium */
 .bg-grain {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
 }
@@ -52,8 +49,6 @@ body {
   animation: float-slow 9s ease-in-out infinite;
 }
 
-/* Hero video: di mobile geser kiri↔kanan agar seluruh frame terlihat,
-   looping terus. Di desktop tetap diam (object-[center_10%]). */
 @keyframes hero-pan-x {
   0% {
     object-position: 0% 10%;

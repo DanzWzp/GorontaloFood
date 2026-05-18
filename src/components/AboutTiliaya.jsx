@@ -39,7 +39,6 @@ const AboutTiliaya = () => {
       id="about-tiliaya"
       className="relative overflow-hidden bg-cream px-6 py-24"
     >
-      {/* Aksen dekoratif */}
       <div className="absolute left-1/2 top-0 h-80 w-80 -translate-x-1/2 rounded-full bg-main/15 blur-3xl" />
       <div className="absolute -left-20 bottom-16 h-64 w-64 rounded-full bg-second/10 blur-3xl" />
       <div className="absolute -right-20 bottom-24 h-64 w-64 rounded-full bg-main/10 blur-3xl" />
@@ -64,7 +63,6 @@ const AboutTiliaya = () => {
           Apa itu <span className="text-main">Tili Aya?</span>
         </motion.h2>
 
-        {/* Gambar di tengah */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -72,7 +70,6 @@ const AboutTiliaya = () => {
           transition={{ duration: 0.9, ease: "easeOut" }}
           className="group relative mx-auto w-full max-w-xl"
         >
-          {/* Cincin cahaya berputar di belakang gambar */}
           <motion.div
             aria-hidden
             animate={{ rotate: 360 }}
@@ -100,7 +97,6 @@ const AboutTiliaya = () => {
           </motion.div>
         </motion.div>
 
-        {/* Penjelasan */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -129,7 +125,6 @@ const AboutTiliaya = () => {
         </motion.div>
       </div>
 
-      {/* Grid fakta */}
       <motion.div
         variants={containerVariant}
         initial="hidden"
