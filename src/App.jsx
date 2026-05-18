@@ -1,12 +1,46 @@
+import { lazy, Suspense } from "react";
 import Navbar from "./components/Navbar";
 import About from "./components/About";
-import Ilabulo3D from "./components/Ilabulo3D";
-import { motion } from "framer-motion";
-import ilabuloVideo from "./assets/ilabulo.mp4";
+import AboutBinte from "./components/AboutBinte";
+import AboutTiliaya from "./components/AboutTiliaya";
+import BackgroundMusic from "./components/BackgroundMusic";
+import { motion, useScroll, useSpring } from "framer-motion";
+import makananGorontaloVideo from "./assets/makanangorontalo.mp4";
+
+// three.js berat → dipisah ke chunk sendiri, dimuat setelah hero tampil
+const Food3D = lazy(() => import("./components/Food3D"));
+
+// Placeholder section selagi chunk 3D dimuat (menjaga layout & estetika)
+function Section3DFallback() {
+  return (
+    <section className="flex min-h-screen w-full flex-col items-center justify-center gap-4 bg-charcoal text-cream/70">
+      <div className="h-12 w-12 animate-spin rounded-full border-2 border-main border-t-transparent" />
+      <span className="text-sm font-medium tracking-wide">
+        Memuat galeri 3D…
+      </span>
+    </section>
+  );
+}
 
 export default function App() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+    mass: 0.3,
+  });
+
   return (
     <>
+      {/* Musik latar — gambus Gorontalo, loop dari detik ke-5 */}
+      <BackgroundMusic />
+
+      {/* Progress scroll halaman */}
+      <motion.div
+        style={{ scaleX }}
+        className="fixed left-0 top-0 z-[60] h-1 w-full origin-left bg-gradient-to-r from-main via-second to-main"
+      />
+
       <Navbar />
 
       {/* --- Hero Section --- */}
@@ -15,17 +49,18 @@ export default function App() {
         className="relative min-h-screen w-full overflow-hidden"
       >
         <video
-          src={ilabuloVideo}
+          src={makananGorontaloVideo}
           autoPlay
           loop
           muted
           playsInline
+          preload="auto"
           className="absolute left-0 top-0 h-full w-full object-cover object-[center_10%]"
         />
 
         {/* Overlay & gradien */}
-        <div className="absolute inset-0 bg-black/45" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-charcoal" />
+        <div className="absolute inset-0 bg-black/15" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-charcoal" />
 
         {/* Konten teks */}
         <div className="relative z-10 flex h-screen flex-col items-center justify-center px-4 text-center text-white">
@@ -35,7 +70,7 @@ export default function App() {
             transition={{ duration: 0.8 }}
             className="mb-5 rounded-full border border-white/25 bg-white/10 px-5 py-1.5 text-sm font-medium tracking-wide backdrop-blur-sm"
           >
-            Warisan Budaya Takbenda Indonesia · Gorontalo
+            Jelajah Kuliner Warisan · Gorontalo
           </motion.span>
 
           <motion.h1
@@ -44,7 +79,7 @@ export default function App() {
             transition={{ duration: 1, delay: 0.1 }}
             className="mb-4 text-5xl font-extrabold drop-shadow-2xl md:text-7xl"
           >
-            <span className="text-main">Ilabulo</span>{" "}
+            <span className="text-main">Cita Rasa</span>{" "}
             <span className="text-second">Gorontalo</span>
           </motion.h1>
 
@@ -54,9 +89,11 @@ export default function App() {
             transition={{ delay: 0.35, duration: 1 }}
             className="mx-auto mb-8 max-w-xl text-lg font-light text-gray-100/90 drop-shadow-md md:text-xl"
           >
-            Rasakan kelezatan khas Gorontalo —{" "}
-            <span className="font-bold text-main">pedas, gurih,</span> dan{" "}
-            <span className="font-bold text-main">autentik!</span>
+            Tiga sajian legendaris —{" "}
+            <span className="font-bold text-main">Ilabulo</span>,{" "}
+            <span className="font-bold text-second">Binte Biluhuta</span>, dan{" "}
+            <span className="font-bold text-main">Tili Aya</span> — yang
+            memadukan rasa pedas, gurih, dan manis warisan tanah Gorontalo.
           </motion.p>
 
           <motion.div
@@ -71,7 +108,7 @@ export default function App() {
               whileTap={{ scale: 0.95 }}
               className="rounded-full border-2 border-transparent bg-main px-8 py-3 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:border-main"
             >
-              🍴 Kenali Ilabulo
+              🍴 Jelajahi Kuliner
             </motion.a>
             <motion.a
               href="#model"
@@ -79,7 +116,7 @@ export default function App() {
               whileTap={{ scale: 0.95 }}
               className="rounded-full border-2 border-white/40 px-8 py-3 text-lg font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:border-white"
             >
-              ✨ Ilabulo 3D Model
+              ✨ Galeri 3D
             </motion.a>
           </motion.div>
         </div>
@@ -95,24 +132,67 @@ export default function App() {
         </motion.div>
       </section>
 
-      {/* --- 3D Model Section (setelah Hero) --- */}
-      <Ilabulo3D />
+      <Suspense fallback={<Section3DFallback />}>
+        {/* --- 3D Ilabulo (setelah Hero) --- */}
+        <Food3D
+          id="model"
+          modelUrl="/ilabulo.glb"
+          modelScale={2.4}
+          badge="Warisan Budaya Takbenda 2016"
+          titleLead="Lihat"
+          titleName="Ilabulo"
+          titleTail="3D"
+          description="Putar dan amati setiap detailnya — gulir halaman untuk memutar model, atau biarkan mengambang sembari menikmati sajian khas Gorontalo ini."
+          accent="main"
+        />
 
-      {/* --- About Section --- */}
+        {/* --- 3D Binte Biluhuta --- */}
+        <Food3D
+          id="binte-3d"
+          modelUrl="/bintebiluhuta.glb"
+          modelScale={2.4}
+          badge="Sup Jagung Khas Gorontalo"
+          titleLead="Lihat"
+          titleName="Binte Biluhuta"
+          titleTail="3D"
+          description="Semangkuk kesegaran jagung manis dan kuah gurih — gulir untuk memutar dan amati teksturnya dari segala sisi."
+          accent="second"
+        />
+
+        {/* --- 3D Tili Aya --- */}
+        <Food3D
+          id="tiliaya-3d"
+          modelUrl="/tiliaya.glb"
+          modelScale={2.4}
+          badge="Kue Manis Penuh Berkah"
+          titleLead="Lihat"
+          titleName="Tili Aya"
+          titleTail="3D"
+          description="Kue lembut bercita rasa gula aren — gulir halaman untuk memutar model dan nikmati keindahan sajian penutup khas Gorontalo."
+          accent="main"
+        />
+      </Suspense>
+
+      {/* --- About Ilabulo --- */}
       <About />
+
+      {/* --- About Binte Biluhuta --- */}
+      <AboutBinte />
+
+      {/* --- About Tili Aya --- */}
+      <AboutTiliaya />
 
       {/* --- Footer --- */}
       <footer className="bg-charcoal px-6 py-12 text-center text-cream/60">
         <h3 className="text-2xl font-bold text-cream">
-          Ilabulo<span className="text-main">.</span>
+          GorontaloFood<span className="text-main">.</span>
         </h3>
         <p className="mx-auto mt-3 max-w-md text-sm">
-          Melestarikan kuliner warisan Gorontalo — simbol persatuan dalam
-          setiap suapan.
+          Melestarikan kuliner warisan Gorontalo — Ilabulo, Binte Biluhuta, dan
+          Tili Aya, simbol persatuan dalam setiap suapan.
         </p>
         <p className="mt-6 text-xs text-cream/40">
-          © {new Date().getFullYear()} Ilabulo Gorontalo. Dibuat dengan ❤️ untuk
-          budaya Nusantara.
+          © {new Date().getFullYear()} GorontaloFood. Dibuat dengan kegabutan oleh Dcode.
         </p>
       </footer>
     </>

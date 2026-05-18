@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import ilabuloImg from "../assets/ilabulo.png";
+import ilabuloImg from "../assets/ilabulo.jpg";
 
 const facts = [
   {
@@ -57,6 +57,8 @@ const About = () => {
             <img
               src={ilabuloImg}
               alt="Proses Pembuatan Ilabulo"
+              loading="lazy"
+              decoding="async"
               className="h-[420px] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
             />
           </div>

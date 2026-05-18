@@ -16,7 +16,9 @@ export default function Navbar() {
   const links = [
     { label: "Home", href: "#home" },
     { label: "Galeri 3D", href: "#model" },
-    { label: "Tentang", href: "#about" },
+    { label: "Ilabulo", href: "#about" },
+    { label: "Binte Biluhuta", href: "#about-binte" },
+    { label: "Tili Aya", href: "#about-tiliaya" },
   ];
 
   return (
@@ -24,11 +26,10 @@ export default function Navbar() {
       initial={{ y: -50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        scrolled
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled
           ? "backdrop-blur-md bg-charcoal/70 shadow-lg"
           : "bg-transparent"
-      }`}
+        }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         {/* Logo */}
@@ -36,7 +37,7 @@ export default function Navbar() {
           href="#home"
           className="text-2xl font-bold tracking-wide text-cream"
         >
-          Ilabulo<span className="text-main">.</span>
+          GorontaloFood<span className="text-main">.</span>
         </a>
 
         {/* Menu Desktop */}
