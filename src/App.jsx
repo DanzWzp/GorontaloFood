@@ -55,7 +55,7 @@ export default function App() {
           muted
           playsInline
           preload="auto"
-          className="absolute left-0 top-0 h-full w-full object-cover object-[center_10%]"
+          className="video-pan-mobile absolute left-0 top-0 h-full w-full object-cover object-[center_10%]"
         />
 
         {/* Overlay & gradien */}
