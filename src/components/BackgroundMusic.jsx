@@ -6,7 +6,7 @@ const START_AT = 5;
 
 export default function BackgroundMusic() {
   const audioRef = useRef(null);
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(true);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -20,32 +20,40 @@ export default function BackgroundMusic() {
       }
     };
 
-    const events = ["pointerdown", "keydown", "touchstart", "scroll"];
-
-    const startOnGesture = () => {
+    // Autoplay TERSENYAP diizinkan browser → musik langsung jalan saat web dibuka,
+    // tinggal di-unmute begitu pengguna menyentuh halaman.
+    const startMuted = () => {
+      audio.muted = true;
       seekToStart();
       audio.play().catch(() => {});
     };
 
-    const tryPlay = () => {
+    const unmute = () => {
+      audio.muted = false;
+      setMuted(false);
       seekToStart();
-      const p = audio.play();
-      if (p && typeof p.then === "function") {
-        p.catch(() => {
-          // Autoplay diblokir browser → mulai saat interaksi pertama
-          events.forEach((e) =>
-            window.addEventListener(e, startOnGesture, {
-              once: true,
-              passive: true,
-            })
-          );
-        });
-      }
+      audio.play().catch(() => {});
     };
+
+    // Hanya event ini yang dianggap "user gesture" oleh browser & membuka audio.
+    // mousemove/scroll TIDAK termasuk — jadi musik baru bersuara setelah
+    // klik / tap / tekan tombol pertama.
+    const events = ["pointerdown", "mousedown", "touchstart", "keydown", "click"];
+    const onFirstGesture = () => {
+      unmute();
+      events.forEach((e) => window.removeEventListener(e, onFirstGesture));
+    };
+    const armGesture = () =>
+      events.forEach((e) =>
+        window.addEventListener(e, onFirstGesture, {
+          once: true,
+          passive: true,
+        })
+      );
 
     const onLoaded = () => {
       seekToStart();
-      tryPlay();
+      startMuted();
     };
 
     // Loop manual agar setiap putaran mulai lagi dari detik ke-5
@@ -57,11 +65,12 @@ export default function BackgroundMusic() {
     audio.addEventListener("loadedmetadata", onLoaded);
     audio.addEventListener("ended", onEnded);
     if (audio.readyState >= 1) onLoaded();
+    armGesture();
 
     return () => {
       audio.removeEventListener("loadedmetadata", onLoaded);
       audio.removeEventListener("ended", onEnded);
-      events.forEach((e) => window.removeEventListener(e, startOnGesture));
+      events.forEach((e) => window.removeEventListener(e, onFirstGesture));
     };
   }, []);
 
@@ -71,7 +80,7 @@ export default function BackgroundMusic() {
     const next = !muted;
     audio.muted = next;
     setMuted(next);
-    if (!next && audio.paused) {
+    if (!next) {
       if (audio.currentTime < START_AT) audio.currentTime = START_AT;
       audio.play().catch(() => {});
     }
